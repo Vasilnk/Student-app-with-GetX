@@ -13,6 +13,7 @@ class EditStudentPage extends StatefulWidget {
   const EditStudentPage({super.key, required this.student});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EditStudentPageState createState() => _EditStudentPageState();
 }
 
@@ -77,7 +78,6 @@ class _EditStudentPageState extends State<EditStudentPage> {
         controller.updateStudent(updatedStudent);
         Get.back();
       } catch (e) {
-        print("Error updating student: $e");
         Get.dialog(AlertDialog(
           title: const Text('Error'),
           content: const Text('Failed to update student. Please try again.'),

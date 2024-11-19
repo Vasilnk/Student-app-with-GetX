@@ -11,6 +11,7 @@ class AddStudentPage extends StatefulWidget {
   const AddStudentPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddStudentPageState createState() => _AddStudentPageState();
 }
 
@@ -64,8 +65,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
         Get.back();
       } catch (e) {
-        print("Error adding student: $e");
-
         Get.dialog(
           AlertDialog(
             title: const Text('Error'),

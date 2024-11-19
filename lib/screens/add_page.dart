@@ -1,12 +1,11 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:student_app/database/db_model.dart';
-import 'package:student_app/providers/students_provider.dart';
+import 'package:student_app/getx%20controllers/students_controller.dart';
 import 'package:student_app/utils.dart';
+import 'package:get/get.dart';
 
 class AddStudentPage extends StatefulWidget {
   const AddStudentPage({super.key});
@@ -37,6 +36,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
     }
   }
 
+  StudentsController controller = Get.find();
+
   Future<void> addStudentButtonClicked() async {
     final name = inputName.text.trim();
     final age = inputAge.text.trim();
@@ -59,20 +60,19 @@ class _AddStudentPageState extends State<AddStudentPage> {
           division: division!);
 
       try {
-        context.read<StudentsProvider>().addStudent(newStudent);
+        controller.addStudent(newStudent);
 
-        Navigator.of(context).pop();
+        Get.back();
       } catch (e) {
         print("Error adding student: $e");
 
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
+        Get.dialog(
+          AlertDialog(
             title: const Text('Error'),
             content: const Text('Failed to add student. Please try again.'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(ctx).pop(),
+                onPressed: () => Get.back(),
                 child: const Text('OK'),
               ),
             ],

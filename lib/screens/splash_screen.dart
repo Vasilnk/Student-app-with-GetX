@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/providers/login_provider.dart';
+import 'package:student_app/getx%20controllers/login_controller.dart';
 import 'package:student_app/screens/home_page.dart';
+import 'package:get/get.dart';
+import 'package:student_app/screens/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -17,22 +19,17 @@ class _SplashScreenState extends State<SplashScreen> {
     _checkIfLoggedIn();
   }
 
+  LoginController controller = Get.find();
+
   void _checkIfLoggedIn() async {
     await Future.delayed(const Duration(seconds: 3));
-    await context.read<LoginProvider>().checkIfLoggedIn();
-    final isLoggedIn = context.read<LoginProvider>().isLoggedIn;
+    await controller.checkIfLoggedIn();
+    final isLoggedIn = controller.isLoggedIn;
 
     if (isLoggedIn) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (Route<dynamic> route) => false,
-      );
+      Get.offAll(const HomePage());
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      Get.off(LoginPage());
     }
   }
 

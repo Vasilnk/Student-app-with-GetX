@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:student_app/database/db_model.dart';
-import 'package:student_app/providers/students_provider.dart';
+import 'package:student_app/getx%20controllers/students_controller.dart';
 import 'package:student_app/screens/edit_page.dart';
 import 'package:student_app/screens/student_profile.dart';
+import 'package:get/get.dart';
 
 class ListViewBuilder extends StatelessWidget {
   final List<StudentDBModel> students;
@@ -11,6 +11,7 @@ class ListViewBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    StudentsController controller = Get.find();
     return ListView.separated(
       itemBuilder: (context, index) {
         final student = students[index];
@@ -23,17 +24,14 @@ class ListViewBuilder extends StatelessWidget {
           height: 100,
           child: ListTile(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProfilePage(student)));
+              Get.to(ProfilePage(student));
             },
             title: Text(
               student.name,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             leading: CircleAvatar(
-              radius: 40,
+              radius: 30,
               backgroundImage:
                   student.image != null ? MemoryImage(student.image!) : null,
               child: student.image == null ? const Icon(Icons.person) : null,
@@ -44,12 +42,7 @@ class ListViewBuilder extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => EditStudentPage(student: student),
-                      ),
-                    );
+                    Get.to(EditStudentPage(student: student));
                   },
                   icon: const Icon(
                     Icons.edit,
@@ -58,54 +51,44 @@ class ListViewBuilder extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text('Confirm Delete'),
-                        content: const Text(
-                            'Are you sure you want to delete this student?'),
-                        actions: [
-                          TextButton(
-                            child: const Text('No'),
-                            onPressed: () {
-                              Navigator.of(ctx).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Yes'),
-                            onPressed: () {
-                              if (student.id != null) {
-                                try {
-                                  context
-                                      .read<StudentsProvider>()
-                                      .deleteStudent(student.id!);
-                                  Navigator.of(ctx).pop();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            '${student.name} is deleted.')),
-                                  );
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Failed to delete student.')),
-                                  );
-                                  throw Exception("Error deleting student: $e");
-                                }
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          'Invalid student ID. Cannot delete.')),
+                    Get.dialog(AlertDialog(
+                      title: const Text('Confirm Delete'),
+                      content: const Text(
+                          'Are you sure you want to delete this student?'),
+                      actions: [
+                        TextButton(
+                          child: const Text('No'),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('Yes'),
+                          onPressed: () {
+                            if (student.id != null) {
+                              try {
+                                controller.deleteStudent(student.id!);
+                                Get.back();
+                                Get.snackbar(
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  '',
+                                  '${student.name} is deleted.',
                                 );
-                                throw Exception("Invalid student ID");
+                              } catch (e) {
+                                Get.snackbar('', 'Failed to delete student.');
+                                throw Exception("Error deleting student: $e");
                               }
-                            },
-                          ),
-                        ],
-                      ),
-                    );
+                            } else {
+                              Get.snackbar(
+                                  '', 'Invalid student ID. Cannot delete');
+                              throw Exception("Invalid student ID");
+                            }
+                          },
+                        ),
+                      ],
+                    ));
                   },
                   icon: const Icon(
                     Icons.delete,

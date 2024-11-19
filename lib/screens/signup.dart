@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/providers/login_provider.dart';
+import 'package:get/get.dart';
+import 'package:student_app/getx%20controllers/login_controller.dart';
 import 'package:student_app/screens/home_page.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -14,6 +14,7 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController controller = Get.find();
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(
@@ -122,19 +123,13 @@ class SignUpPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          context.read<LoginProvider>().setLogin(
-                              _schoolIdController.text,
-                              _passwordController.text,
-                              _nameController.text);
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()),
-                              (Route<dynamic> route) => false);
+                          controller.setLogin(_schoolIdController.text,
+                              _passwordController.text, _nameController.text);
+                          Get.offAll(const HomePage());
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
+                        backgroundColor: Color.fromARGB(255, 81, 112, 105),
                         minimumSize: const Size(double.infinity, 50.0),
                       ),
                       child: const Text(

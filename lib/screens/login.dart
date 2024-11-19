@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/providers/login_provider.dart';
+import 'package:student_app/getx%20controllers/login_controller.dart';
 import 'package:student_app/screens/home_page.dart';
 import 'package:student_app/screens/signup.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -13,6 +13,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController controller = Get.find();
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(
@@ -83,27 +84,19 @@ class LoginPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        final schoolId = context.read<LoginProvider>().schoolId;
-                        final password = context.read<LoginProvider>().password;
+                        final schoolId = controller.schoolId;
+                        final password = controller.password;
 
                         if (schoolId == _schoolIdController.text &&
                             password == _passwordController.text) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()),
-                            (Route<dynamic> route) => false,
-                          );
+                          Get.offAll(const HomePage());
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Invalid credentials')),
-                          );
+                          Get.snackbar('', 'Invalid credentials');
                         }
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: const Color.fromARGB(255, 81, 112, 105),
                       minimumSize: const Size(double.infinity, 50.0),
                     ),
                     child: const Text(
@@ -121,11 +114,7 @@ class LoginPage extends StatelessWidget {
                       const Text('Don\'t have an account? '),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpPage()),
-                          );
+                          Get.to(SignUpPage());
                         },
                         child: const Text('Sign Up'),
                       ),

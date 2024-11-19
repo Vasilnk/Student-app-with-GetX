@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:student_app/database/db_model.dart';
-import 'package:student_app/providers/students_provider.dart';
+import 'package:student_app/getx%20controllers/students_controller.dart';
 import 'package:student_app/screens/edit_page.dart';
 
 class GridViewBuilder extends StatelessWidget {
@@ -10,6 +10,8 @@ class GridViewBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    StudentsController controller = Get.find();
+
     return GridView.builder(
       padding: const EdgeInsets.all(15),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -53,12 +55,7 @@ class GridViewBuilder extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => EditStudentPage(student: student),
-                        ),
-                      );
+                      Get.to(EditStudentPage(student: student));
                     },
                     icon: const Icon(
                       Icons.edit,
@@ -67,9 +64,8 @@ class GridViewBuilder extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
+                      Get.dialog(
+                        AlertDialog(
                           title: const Text('Confirm Delete'),
                           content: const Text(
                               'Are you sure you want to delete this student?'),
@@ -77,7 +73,7 @@ class GridViewBuilder extends StatelessWidget {
                             TextButton(
                               child: const Text('No'),
                               onPressed: () {
-                                Navigator.of(ctx).pop();
+                                Get.back();
                               },
                             ),
                             TextButton(
@@ -85,30 +81,21 @@ class GridViewBuilder extends StatelessWidget {
                               onPressed: () {
                                 if (student.id != null) {
                                   try {
-                                    context
-                                        .read<StudentsProvider>()
-                                        .deleteStudent(student.id!);
-                                    Navigator.of(ctx).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              '${student.name} is deleted.')),
-                                    );
+                                    controller.deleteStudent(student.id!);
+                                    Get.back();
+                                    Get.snackbar('deleted',
+                                        '${student.name} is deleted.');
                                   } catch (e) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Failed to delete student.')),
-                                    );
+                                    Get.snackbar(
+                                        'error', 'Failed to delete student.');
+
                                     throw Exception(
                                         "Error deleting student: $e");
                                   }
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'Invalid student ID. Cannot delete.')),
-                                  );
+                                  Get.snackbar('error',
+                                      'Invalid student ID. Cannot delete.');
+
                                   throw Exception("Invalid student ID");
                                 }
                               },

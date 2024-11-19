@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/providers/login_provider.dart';
+import 'package:get/get.dart';
+import 'package:student_app/getx%20controllers/login_controller.dart';
 import 'package:student_app/screens/logout.dart';
 import 'package:student_app/utils.dart';
 
@@ -12,6 +12,8 @@ class DrowerScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    LoginController controller = Get.find();
+
     return Drawer(
       key: scaffoldKey,
       child: Container(
@@ -30,18 +32,13 @@ class DrowerScreen extends StatelessWidget {
                     backgroundImage: AssetImage('assets/images/school.jpeg'),
                   ),
                   const SizedBox(height: 20),
-                  Consumer(
-                    builder: (BuildContext context, LoginProvider value,
-                        Widget? child) {
-                      return Text(
-                        value.schoolName ?? 'No name added',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      );
-                    },
+                  Text(
+                    controller.schoolName ?? 'No name added',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
                 ],
               ),
@@ -58,14 +55,9 @@ class DrowerScreen extends StatelessWidget {
                     title: Text(item['title']),
                     onTap: () {
                       if (index == 1) {
-                        logoutFunction(context);
+                        logoutFunction();
                       } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => item['screen'],
-                          ),
-                        );
+                        Get.to(item['screen']);
                       }
                     },
                   );

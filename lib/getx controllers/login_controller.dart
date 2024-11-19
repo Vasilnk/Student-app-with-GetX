@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
-class LoginProvider with ChangeNotifier {
+class LoginController extends GetxController {
   bool _isLoggedIn = false;
   String? schoolId;
   String? password;
@@ -20,8 +20,7 @@ class LoginProvider with ChangeNotifier {
     } else {
       _isLoggedIn = false;
     }
-
-    notifyListeners();
+    update();
   }
 
   Future<void> setLogin(String id, String pass, String name) async {
@@ -29,20 +28,24 @@ class LoginProvider with ChangeNotifier {
     await prefs.setString('schoolId', id);
     await prefs.setString('password', pass);
     await prefs.setString('schoolName', name);
+
     schoolId = id;
     password = pass;
     _isLoggedIn = true;
     schoolName = name;
-    notifyListeners();
+
+    update();
   }
 
   void logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear;
+    await prefs.clear();
+
     schoolId = null;
     password = null;
     _isLoggedIn = false;
+    schoolName = null;
 
-    notifyListeners();
+    update();
   }
 }

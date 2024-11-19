@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/providers/login_provider.dart';
+import 'package:get/get.dart';
+import 'package:student_app/getx%20controllers/login_controller.dart';
 
 // ignore: must_be_immutable
 class SchoolProfileScreen extends StatelessWidget {
@@ -19,6 +19,8 @@ class SchoolProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginController controller = Get.find();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -62,11 +64,8 @@ class SchoolProfileScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("School ID", style: titleStyle),
-                              Consumer(
-                                  builder:
-                                      (context, LoginProvider value, child) =>
-                                          Text(value.schoolId ?? "N/A",
-                                              style: detailStyle)),
+                              Text(controller.schoolId ?? "N/A",
+                                  style: detailStyle),
                             ]),
                         const Divider(
                           color: Colors.grey,
@@ -77,11 +76,8 @@ class SchoolProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("School Name", style: titleStyle),
-                            Consumer(
-                                builder:
-                                    (context, LoginProvider value, child) =>
-                                        Text(value.schoolName ?? "N/A",
-                                            style: detailStyle)),
+                            Text(controller.schoolName ?? "N/A",
+                                style: detailStyle),
                           ],
                         ),
                       ],

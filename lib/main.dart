@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:student_app/database/db_model.dart';
-import 'package:student_app/providers/login_provider.dart';
-import 'package:student_app/providers/students_provider.dart';
+import 'package:student_app/getx%20controllers/login_controller.dart';
+import 'package:student_app/getx%20controllers/students_controller.dart';
 import 'package:student_app/screens/splash_screen.dart';
+import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +13,6 @@ Future<void> main() async {
     Hive.registerAdapter(StudentDBModelAdapter());
   }
   await Hive.openBox<StudentDBModel>('students');
-  // await Hive.openBox<Uint8List>('image');
   runApp(const MyApp());
 }
 
@@ -22,26 +21,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => LoginProvider()),
-        ChangeNotifierProvider(create: (context) => StudentsProvider()),
-      ],
-      child: MaterialApp(
-        theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-          // centerTitle: true,
+    Get.put(StudentsController());
+    Get.put(LoginController());
 
-          color: Color.fromARGB(255, 81, 112, 105),
-          // color: Color.fromARGB(255, 226, 224, 224),
-          titleTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-              color: Color.fromARGB(255, 46, 42, 42)),
-        )),
-        debugShowCheckedModeBanner: false,
-        home: const SplashScreen(),
-      ),
+    return GetMaterialApp(
+      theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+        centerTitle: true,
+        color: Color.fromARGB(255, 81, 112, 105),
+        titleTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+            color: Color.fromARGB(255, 46, 42, 42)),
+      )),
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
     );
   }
 }

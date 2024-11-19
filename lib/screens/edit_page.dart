@@ -1,10 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:student_app/database/db_model.dart';
-import 'package:student_app/providers/students_provider.dart';
+import 'package:student_app/getx%20controllers/students_controller.dart';
 import 'package:student_app/utils.dart';
 
 class EditStudentPage extends StatefulWidget {
@@ -51,6 +51,7 @@ class _EditStudentPageState extends State<EditStudentPage> {
     }
   }
 
+  StudentsController controller = Get.find();
   Future<void> updateStudentButtonClicked() async {
     final name = inputName.text.trim();
     final age = inputAge.text.trim();
@@ -73,23 +74,20 @@ class _EditStudentPageState extends State<EditStudentPage> {
       );
 
       try {
-        context.read<StudentsProvider>().updateStudent(updatedStudent);
-        Navigator.of(context).pop();
+        controller.updateStudent(updatedStudent);
+        Get.back();
       } catch (e) {
         print("Error updating student: $e");
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Failed to update student. Please try again.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(ctx).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
+        Get.dialog(AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Failed to update student. Please try again.'),
+          actions: [
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text('OK'),
+            ),
+          ],
+        ));
       }
     }
   }

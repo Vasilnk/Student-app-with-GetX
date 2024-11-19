@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:student_app/providers/students_provider.dart';
+import 'package:get/get.dart';
+import 'package:student_app/getx%20controllers/students_controller.dart';
 import 'package:student_app/screens/add_page.dart';
 import 'package:student_app/screens/drower_screen.dart';
 import 'package:student_app/screens/grid_view.dart';
@@ -32,8 +32,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final studentsProvider = Provider.of<StudentsProvider>(context);
-    final allStudents = studentsProvider.students;
+    StudentsController controller = Get.find();
+    final allStudents = controller.students;
     final filteredStudents = searchController.text.isEmpty
         ? allStudents
         : allStudents
@@ -63,21 +63,20 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           searchBar(),
-          Expanded(
-            child: filteredStudents.isEmpty
-                ? noStudents()
-                : isGridView
-                    ? GridViewBuilder(filteredStudents)
-                    : ListViewBuilder(filteredStudents),
+          Obx(
+            () => Expanded(
+              child: filteredStudents.isEmpty
+                  ? noStudents()
+                  : isGridView
+                      ? GridViewBuilder(filteredStudents)
+                      : ListViewBuilder(filteredStudents),
+            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddStudentPage()),
-          );
+          Get.to(const AddStudentPage());
         },
         label: const Text('Add', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 81, 112, 105),

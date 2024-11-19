@@ -15,7 +15,6 @@ class PrivacyPolicyPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Introduction
               Text(
                 'Privacy Policy',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -26,8 +25,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // Information We Collect
               Text(
                 'Information We Collect',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -42,8 +39,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // How We Use Your Information
               Text(
                 'How We Use Your Information',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -59,8 +54,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // Disclosure of Your Information
               Text(
                 'Disclosure of Your Information',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -75,8 +68,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // Data Security
               Text(
                 'Data Security',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -87,8 +78,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // Your Data Protection Rights
               Text(
                 'Your Data Protection Rights',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -105,8 +94,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // Changes to This Privacy Policy
               Text(
                 'Changes to This Privacy Policy',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -117,8 +104,6 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 20),
-
-              // Contact Us
               Text(
                 'Contact Us',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

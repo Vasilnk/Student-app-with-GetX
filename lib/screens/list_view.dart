@@ -24,7 +24,7 @@ class ListViewBuilder extends StatelessWidget {
           height: 100,
           child: ListTile(
             onTap: () {
-              Get.to(ProfilePage(student));
+              Get.to(ProfilePage(student.id));
             },
             title: Text(
               student.name,
